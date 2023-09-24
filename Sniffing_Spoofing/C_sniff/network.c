@@ -43,10 +43,10 @@ void got_packet(u_char* args, const struct pcap_pkthdr* header, const u_char* pa
         printf("Destination IP: %s\n", inet_ntoa(ip_header->ip_dst));
       
         int ip_header_len = ip_header->ip_hl << 2;
-        
+        struct tcphdr* tcp_header = (struct tcphdr*)(packet + sizeof(struct ethhdr) + ip_header_len);
+   
         switch(ip_header->ip_p ) { // Check the protocol field in IP header
           case IPPROTO_TCP:
-            struct tcphdr* tcp_header = (struct tcphdr*)(packet + sizeof(struct ethhdr) + ip_header_len);
             printf("Protocol: TCP\n");
             printf("Source Port: %d\n", ntohs(tcp_header->th_sport));
             printf("Destination Port: %d\n", ntohs(tcp_header->th_dport));
