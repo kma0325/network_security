@@ -23,7 +23,6 @@ void got_packet(u_char* args, const struct pcap_pkthdr* header, const u_char* pa
             printf("Destination IP: %s\n", inet_ntoa(ip_header->ip_dst));
             printf("Source Port: %d\n", ntohs(tcp_header->th_sport));
             printf("Destination Port: %d\n", ntohs(tcp_header->th_dport));
-            break;
        
         }
     }
