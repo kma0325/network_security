@@ -5,8 +5,8 @@
 #include <pcap.h>
 #include <linux/if_packet.h>
 #include <net/ethernet.h>
-#include <net/ip.h>
-#include <net/tcp.h>
+#include <netinet/ip.h>
+#include <netinet/tcp.h>
 #include <arpa/inet.h>
 
 struct ethheader {
