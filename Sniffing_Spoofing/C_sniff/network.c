@@ -13,7 +13,7 @@ void got_packet(u_char* args, const struct pcap_pkthdr* header, const u_char* pa
 
     if (ntohs(eth_header->h_proto) == ETH_P_IP) { // Check if it's an IP packet
         struct ip* ip_header = (struct ip*)(packet + sizeof(struct ethhdr));
-        int ip_header_len = ip_header->ip_hl << 2; // Calculate IP header length in bytes
+        int ip_header_len = ip_header->ip_hl << 2;
 
         if(ip_header->ip_p == IPPROTO_TCP) { // Check the protocol field in IP header
         
@@ -31,6 +31,9 @@ void got_packet(u_char* args, const struct pcap_pkthdr* header, const u_char* pa
 int main() {
     pcap_t* handle;
     char errbuf[PCAP_ERRBUF_SIZE];
+    struct bpf_program fp;
+    char filter_exp[] = "tcp";
+    bpf_u_int32 net;
 
     // Step 1: Open live pcap session on NIC with name "enp0s3" (Change this to your network interface name)
     handle = pcap_open_live("enp0s3", BUFSIZ, 1, 1000, errbuf);
