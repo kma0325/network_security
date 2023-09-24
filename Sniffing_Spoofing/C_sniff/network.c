@@ -1,6 +1,10 @@
 #include <stdlib.h>
+#include <unistd.h>
 #include <stdio.h>
+#include <sys/socket.h>
 #include <pcap.h>
+#include <linux/if_packet.h>
+#include <net/ethernet.h>
 #include <arpa/inet.h>
 
 struct ethheader {
