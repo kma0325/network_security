@@ -15,8 +15,8 @@ void got_packet(u_char* args, const struct pcap_pkthdr* header, const u_char* pa
         struct ip* ip_header = (struct ip*)(packet + sizeof(struct ethhdr));
         int ip_header_len = ip_header->ip_hl << 2; // Calculate IP header length in bytes
 
-        switch (ip_header->ip_p) { // Check the protocol field in IP header
-        case IPPROTO_TCP: {
+        if(ip_header->ip_p == IPPROTO_TCP) { // Check the protocol field in IP header
+        
             struct tcphdr* tcp_header = (struct tcphdr*)(packet + sizeof(struct ethhdr) + ip_header_len);
             printf("Protocol: TCP\n");
             printf("Source IP: %s\n", inet_ntoa(ip_header->ip_src));
@@ -24,27 +24,7 @@ void got_packet(u_char* args, const struct pcap_pkthdr* header, const u_char* pa
             printf("Source Port: %d\n", ntohs(tcp_header->th_sport));
             printf("Destination Port: %d\n", ntohs(tcp_header->th_dport));
             break;
-        }
-        case IPPROTO_UDP: {
-            struct udphdr* udp_header = (struct udphdr*)(packet + sizeof(struct ethhdr) + ip_header_len);
-            printf("Protocol: UDP\n");
-            printf("Source IP: %s\n", inet_ntoa(ip_header->ip_src));
-            printf("Destination IP: %s\n", inet_ntoa(ip_header->ip_dst));
-            printf("Source Port: %d\n", ntohs(udp_header->uh_sport));
-            printf("Destination Port: %d\n", ntohs(udp_header->uh_dport));
-            break;
-        }
-        case IPPROTO_ICMP: {
-            struct icmphdr* icmp_header = (struct icmphdr*)(packet + sizeof(struct ethhdr) + ip_header_len);
-            printf("Protocol: ICMP\n");
-            printf("Source IP: %s\n", inet_ntoa(ip_header->ip_src));
-            printf("Destination IP: %s\n", inet_ntoa(ip_header->ip_dst));
-            printf("Type: %d\n", icmp_header->type);
-            break;
-        }
-        default:
-            printf("Protocol: Unknown\n");
-            break;
+       
         }
     }
 }
