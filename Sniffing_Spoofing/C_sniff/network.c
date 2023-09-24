@@ -34,13 +34,16 @@ void got_packet(u_char* args, const struct pcap_pkthdr* header, const u_char* pa
     struct ethhdr* eth_header = (struct ethhdr*)packet;
 
     if (ntohs(eth_header->h_proto) == ETH_P_IP) { // Check if it's an IP packet
-        struct ip* ip_header = (struct ip*)(packet + sizeof(struct ethhdr));
+        struct ipheader* ip_header = (struct ipheader*)(packet + sizeof(struct ethhdr));
+
         int ip_header_len = ip_header->ip_hl << 2;
 
         if(ip_header->ip_p == IPPROTO_TCP) { // Check the protocol field in IP header
         
-            struct tcphdr* tcp_header = (struct tcphdr*)(packet + sizeof(struct ethhdr) + ip_header_len);
+            struct tcpheader* tcp_header = (struct tcpheader*)(packet + sizeof(struct ethhdr) + ip_header_len);
             printf("Protocol: TCP\n");
+            printf("Source MAC: %02x:%02x:%02x:%02x:%02x:%02x\n",eth_header->h_source[0], eth_header->h_source[1],eth_header->h_source[2], eth_header->h_source[3],eth_header->h_source[4], eth_header->h_source[5]);
+            printf("Destination MAC: %02x:%02x:%02x:%02x:%02x:%02x\n",eth_header->h_dest[0], eth_header->h_dest[1],eth_header->h_dest[2], eth_header->h_dest[3],eth_header->h_dest[4], eth_header->h_dest[5]);
             printf("Source IP: %s\n", inet_ntoa(ip_header->ip_src));
             printf("Destination IP: %s\n", inet_ntoa(ip_header->ip_dst));
             printf("Source Port: %d\n", ntohs(tcp_header->th_sport));
